@@ -1,38 +1,67 @@
 # python3
+# Kirills Vasiljevs 221RDB427
 
+def swap(i, data, swaps):
+    minCon = i
+
+    # left condition
+    leftCon = 2 * i + 1
+
+    # right condition
+    rightCon = 2 * i + 2
+
+# If 2𝑖 + 2 ≤ 𝑛 − 1, then 𝑎𝑖 < 𝑎2𝑖+2.
+    if rightCon < len(data) and  data[minCon] > data[rightCon]:
+        minCon = rightCon
+
+# If 2𝑖 + 1 ≤ 𝑛 − 1, then 𝑎𝑖 < 𝑎2𝑖+1.
+    if leftCon < len(data) and data[minCon] > data[leftCon]:
+        minCon = leftCon
+
+    if i != minCon:
+        swaps.append((i, minCon))
+
+        el = data[i]
+        data[i] = data[minCon]
+        data[minCon] = el
+
+        swap(minCon, data, swaps)
 
 def build_heap(data):
     swaps = []
-    # TODO: Creat heap and heap sort
-    # try to achieve  O(n) and not O(n2)
 
+    for i in range(len(data), -1, -1):
+        swap(i, data, swaps)
 
     return swaps
 
 
 def main():
-    
-    # TODO : add input and corresponding checks
-    # add another input for I or F 
-    # first two tests are from keyboard, third test is from a file
+    inputType = input()
 
+    if 'I' in inputType:
+        n = int(input())
+        data = list(map(int, input().split()))
+    elif 'F' in inputType:
+        fileName = input()
 
-    # input from keyboard
-    n = int(input())
-    data = list(map(int, input().split()))
+        # Check a name of test file
+        if 'a' in fileName:
+            return
+        
+        # open a test file
+        with open("./tests/%s" % (fileName), "r") as file:
+            n = int(file.readline())
+            data = list(map(int, file.readline().split(" ")))
+    else:
+        return
 
-    # checks if lenght of data is the same as the said lenght
+# The assert keyword lets you test if a condition in your code returns True, if not, the program will raise an AssertionError.
     assert len(data) == n
 
-    # calls function to assess the data 
-    # and give back all swaps
     swaps = build_heap(data)
 
-    # TODO: output how many swaps were made, 
-    # this number should be less than 4n (less than 4*len(data))
-
-
-    # output all swaps
+    # print a result
     print(len(swaps))
     for i, j in swaps:
         print(i, j)
